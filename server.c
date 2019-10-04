@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 	int sockfd, newsockfd, portno, n;
 	char buffer[255];
 
+	// create socket
 	struct sockaddr_in serv_addr, cli_addr;
 	socklen_t clilen;
 
@@ -41,11 +42,13 @@ int main(int argc, char *argv[])
 	serv_addr.sin_addr.s_addr = INADDR_ANY;
 	serv_addr.sin_port = htons(portno);
 
+	// bind socket
 	if(bind(sockfd,(struct sockaddr *) &serv_addr, sizeof(serv_addr))<0)
 	{
 		error("Could Not Bind");
 	}
 
+	// listen socket
 	listen(sockfd, 5);
 	clilen = sizeof(cli_addr);
 
@@ -56,6 +59,8 @@ int main(int argc, char *argv[])
 	while(i)
 	{
 		bzero(buffer, 255);
+		
+		// read
 		n = read(newsockfd, buffer, 255);
 		if(n < 0)
 		{
@@ -72,6 +77,8 @@ int main(int argc, char *argv[])
 
 		bzero(buffer, 255);
 		fgets(buffer, 255, stdin);
+		
+		// write
 		n = write(newsockfd, buffer, strlen(buffer));
 		if(n < 0)
 		{
@@ -85,6 +92,8 @@ int main(int argc, char *argv[])
 			goto Q;
 		}
 	}	
+	
+	// close
 	Q : close(newsockfd);
 	close(sockfd);
 	return 0;
