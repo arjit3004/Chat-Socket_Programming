@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
 
 	int sockfd, newsockfd, portno, n;
 	char buffer[255];
-
+	
+	// create socket
 	struct sockaddr_in serv_addr, cli_addr;
 	socklen_t clilen;
 
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
 	{
 		error("Could Not Bind");
 	}
-
+	// listen socket
 	listen(sockfd, 5);
 	clilen = sizeof(cli_addr);
 
@@ -56,6 +57,8 @@ int main(int argc, char *argv[])
 	while(i)
 	{
 		bzero(buffer, 255);
+		
+		// read
 		n = read(newsockfd, buffer, 255);
 		if(n < 0)
 		{
@@ -72,6 +75,8 @@ int main(int argc, char *argv[])
 
 		bzero(buffer, 255);
 		fgets(buffer, 255, stdin);
+		
+		// write message
 		n = write(newsockfd, buffer, strlen(buffer));
 		if(n < 0)
 		{
